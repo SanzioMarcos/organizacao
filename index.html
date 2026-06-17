@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Boas Práticas - Projetos Profissionais</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-color: #38bdf8;
+            --code-bg: #0b0f19;
+            --border-color: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Suaviza o scroll ao clicar nos links */
+        html {
+            scroll-behavior: auto; /*smooth;*/
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Fundo escrito (Marca d'água de código) */
+        body::before {
+            content: "import os\nimport sys\ndef main():\n  try:\n    init_project()\n  except Exception as e:\n    logger.error(e)\n\n# Conventional Commits\nfeat: add feature\nfix: bugfix\ndocs: update\n\nGET /users HTTP/1.1\nHost: api.dev\n\nFROM python:3.11\nWORKDIR /app\nCOPY . .\nCMD [\"pytest\"]";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.03);
+            white-space: pre;
+            padding: 20px;
+            pointer-events: none;
+            line-height: 1.8;
+            letter-spacing: 2px;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: rgba(30, 41, 59, 0.95);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(4px);
+        }
+
+        header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: var(--accent-color);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Menu de Navegação Rápida */
+        .nav-menu {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .nav-menu h3 {
+            margin-bottom: 10px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-color);
+        }
+
+        .nav-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            list-style: none;
+        }
+
+        .nav-tags a {
+            color: var(--text-color);
+            text-decoration: none;
+            background-color: var(--card-bg);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .nav-tags a:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            font-weight: bold;
+        }
+
+        section {
+            margin-bottom: 40px;
+            scroll-margin-top: 20px;
+        }
+
+        h2 {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #e2e8f0;
+        }
+
+        /* Estilização de Códigos */
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: #e2e8f0;
+        }
+
+        /* Highlight sutil para inline code */
+        p code, li code {
+            background-color: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #ff79c6;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 30px 0;
+        }
+
+        /* Botão Voltar ao Topo */
+        .back-to-top {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .back-to-top:hover {
+            background-color: rgba(56, 189, 248, 0.1);
+            text-decoration: underline;
+        }
+
+        /* Lista de Regras Finais */
+        .regras-finais {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 2px solid var(--accent-color);
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+
+        .regras-finais h2 {
+            color: #f43f5e;
+        }
+
+        .regras-finais ol {
+            padding-left: 20px;
+        }
+
+        .regras-finais li {
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+        }
+
+        .regras-finais li::marker {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<!-- ID adicionado no body para servir de âncora para o topo -->
+<body id="top">
+
+    <div class="container">
+        <header>
+            <h1>Guia de Início Rápido: Convenções Concretas</h1>
+            <p>Os princípios da indústria aplicados na prática de projetos profissionais.</p>
+        </header>
+
+        <!-- Menu de Navegação Rápida -->
+        <nav class="nav-menu">
+            <h3>Índice Rápido</h3>
+            <ul class="nav-tags" id="menu-links">
+                <!-- Inserido dinamicamente via JS -->
+            </ul>
+        </nav>
+
+        <section id="commits">
+            <h2>Commits (Conventional Commits)</h2>
+            <p>Sempre comece com uma flag:</p>
+<pre><code>feat: adiciona autenticação JWT
+fix: corrige timeout da API
+docs: atualiza README
+test: adiciona testes do usuário
+refactor: reorganiza camada de serviços
+chore: atualiza dependências
+ci: adiciona workflow GitHub Actions</code></pre>
+            <p>Regra:</p>
+<pre><code>&lt;tipo&gt;: descrição corta</code></pre>
+            <p>Tipos mínimos: <code>feat</code>, <code>fix</code>, <code>docs</code>, <code>test</code>, <code>refactor</code>, <code>chore</code>, <code>ci</code>.</p>
+        </section>
+
+        <hr>
+
+        <section id="estrutura">
+            <h2>Estrutura de pastas Python</h2>
+<pre><code>project/
+├── src/
+├── tests/
+├── docs/
+├── .github/
+├── Dockerfile
+├── requirements.txt
+└── README.md</code></pre>
+            <p>Se for API:</p>
+<pre><code>src/
+├── api/
+├── services/
+├── models/
+├── database/
+└── utils/</code></pre>
+        </section>
+
+        <hr>
+
+        <section id="readme">
+            <h2>README</h2>
+            <p>Ordem padrão:</p>
+<pre><code># Nome do Projeto
+
+Descrição
+
+Instalação
+
+Uso
+
+API
+
+Testes
+
+Docker
+
+Licença</code></pre>
+        </section>
+
+        <hr>
+
+        <section id="erros">
+            <h2>Tratamento de erros</h2>
+            <p>Nunca:</p>
+<pre><code>except:
+    pass</code></pre>
+            <p>Sempre:</p>
+<pre><code>except Exception as e:
+    logger.error(str(e))
+    raise</code></pre>
+        </section>
+
+        <hr>
+
+        <section id="testes">
+            <h2>Testes</h2>
+            <p>Espelhe a estrutura do código.</p>
+<pre><code>src/
+└── services/
+    └── user.py
+
+tests/
+└── services/
+    └── test_user.py</code></pre>
+            <p>Nome padrão:</p>
+<pre><code>test_&lt;arquivo&gt;.py</code></pre>
+            <p>Funções:</p>
+<pre><code>def test_create_user():</code></pre>
+        </section>
+
+        <hr>
+
+        <section id="api">
+            <h2>API REST</h2>
+            <p>URLs sempre no plural:</p>
+<pre><code>/users
+/products
+/orders</code></pre>
+            <p>Métodos:</p>
+<pre><code>GET | POST | PUT | DELETE</code></pre>
+            <p>Documentação:</p>
+<pre><code>Swagger/OpenAPI</code></pre>
+            <p>Hoje isso é praticamente obrigatório.</p>
+        </section>
+
+        <hr>
+
+        <section id="docker">
+            <h2>Docker</h2>
+            <p>Arquivo obrigatório: <code>Dockerfile</code></p>
+            <p>Opcional: <code>docker-compose.yml</code></p>
+            <p>Comando padrão:</p>
+<pre><code>docker build .
+docker run .</code></pre>
+        </section>
+
+        <hr>
+
+        <section id="cicd">
+            <h2>CI/CD</h2>
+            <p>Pasta padrão: <code>.github/workflows/</code></p>
+            <p>Arquivo: <code>ci.yml</code></p>
+            <p>Fluxo mínimo:</p>
+<pre><code>Checkout -> Instalar dependências -> Executar testes -> Executar lint</code></pre>
+        </section>
+
+        <hr>
+
+        <section id="ia">
+            <h2>Engenharia de IA</h2>
+            <p>Além das regras acima:</p>
+<pre><code>models/
+prompts/
+rag/
+evaluations/</code></pre>
+            <p>E sempre: <code>.env.example</code></p>
+            <p>Nunca: <code>.env</code></p>
+        </section>
+
+        <section id="obrigatorias" class="regras-finais">
+            <h2>10 Regras Obrigatórias para o GitHub</h2>
+            <p>Se reduzirmos tudo a regras cruciais para qualquer projeto profissional de backend, MLOps e engenharia de IA:</p>
+            <ol>
+                <li>Use <strong>Conventional Commits</strong>.</li>
+                <li>Código dentro de <code>src/</code>.</li>
+                <li>Testes dentro de <code>tests/</code>.</li>
+                <li><strong>README</strong> com instalação e uso.</li>
+                <li><strong>Dockerfile</strong> funcional.</li>
+                <li>Workflow <strong>CI automático</strong>.</li>
+                <li>Nunca use <code>except: pass</code>.</li>
+                <li>APIs documentadas com <strong>OpenAPI/Swagger</strong>.</li>
+                <li>Variáveis confidenciais mapeadas em <code>.env.example</code>.</li>
+                <li><strong>Um commit, uma responsabilidade.</strong></li>
+            </ol>
+        </section>
+
+        <footer>
+            <p>Guia Prático • Padrões de Mercado</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section');
+            const menuContainer = document.getElementById('menu-links');
+
+            sections.forEach(section => {
+                const id = section.id;
+                const title = section.querySelector('h2').innerText;
+                
+                // 1. Gera dinamicamente o link do Menu Superior
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.setAttribute('href', `#${id}`);
+                link.innerText = title.split(' (')[0]; 
+                
+                listItem.appendChild(link);
+                menuContainer.appendChild(listItem);
+
+                // 2. Cria e injeta o botão "Voltar ao topo" no final de cada seção
+                const backToTopLink = document.createElement('a');
+                backToTopLink.setAttribute('href', '#top');
+                backToTopLink.className = 'back-to-top';
+                backToTopLink.innerHTML = '↑ Voltar ao topo';
+                
+                section.appendChild(backToTopLink);
+            });
+        });
+    </script>
+</body>
+</html>
